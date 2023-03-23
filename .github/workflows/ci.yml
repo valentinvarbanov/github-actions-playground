@@ -47,4 +47,5 @@ jobs:
           token: '${{ github.token }}'
           environment-url: http://my-app-url.com
           environment: development
+          state: 'success'
           description: Run ${{github.run_number}} deployed
