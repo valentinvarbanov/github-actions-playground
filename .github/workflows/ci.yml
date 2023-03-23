@@ -33,3 +33,15 @@ jobs:
       - name: Run a test script 
         run: |
           echo "It works..."
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ build ]  
+    steps:
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment-url: http://my-app-url.com
+          environment: test-${{github.run_number}}
