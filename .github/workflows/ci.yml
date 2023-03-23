@@ -46,6 +46,27 @@ jobs:
         with:
           token: '${{ github.token }}'
           environment-url: http://my-app-url.com
-          environment: development
+          environment: production
+
+      - name: Deploy my app
+        run: |
+          echo it works
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: 'success'
-          description: Run ${{github.run_number}} deployed
+          description: Lets see where it shows
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'failure'
