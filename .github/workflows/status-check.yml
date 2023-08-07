@@ -27,6 +27,13 @@ jobs:
         run: |
           false
      
+     
+      # Step that will be skipped
+      - name: Step that should be skipped
+        if: skipped()
+        run: |
+          echo "Code coverage skipped" > results.md
+          
       # Step that will be skipped
       - name: Step that should be skipped
         id: custom-id
