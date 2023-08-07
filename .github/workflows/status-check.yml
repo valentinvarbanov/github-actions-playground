@@ -38,7 +38,9 @@ jobs:
       - name: Step that should be skipped
         id: custom-id
         run: |
-          touch results.md
+          if [ ! -f results.md ]; then
+            echo 'No results' > results.md
+          fi
 
       - uses: LouisBrunner/checks-action@v1.6.2
         if: always()
