@@ -25,14 +25,14 @@ jobs:
       # Step that fails
       - name: Run a test script 
         run: |
-          false
-     
+          true
      
       # Step that will be skipped
       - name: Prepare results.md file
         if: failure()
         run: |
           echo "Code coverage skipped" > results.md
+          ls
           
       # Step that will be skipped
       - name: Step that should be skipped
