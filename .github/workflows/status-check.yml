@@ -30,7 +30,7 @@ jobs:
      
       # Step that will be skipped
       - name: Step that should be skipped
-        if: skipped()
+        if: failure()
         run: |
           echo "Code coverage skipped" > results.md
           
