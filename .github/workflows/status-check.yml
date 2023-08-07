@@ -37,7 +37,7 @@ jobs:
         if: always()
         with:
           token: ${{ github.token }}
-          name: ${{ inputs.code_coverage_check_name }}
+          name: results-check
           conclusion: ${{ steps.custom-id.conclusion }}
           output_text_description_file: results.md
           output: |
