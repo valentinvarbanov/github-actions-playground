@@ -25,7 +25,7 @@ jobs:
       # Step that fails
       - name: Run a test script 
         run: |
-          true
+          false
      
       # Step that will be skipped
       - name: Prepare results.md file
