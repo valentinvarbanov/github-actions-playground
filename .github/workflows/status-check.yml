@@ -37,6 +37,7 @@ jobs:
       # Step that will be skipped
       - name: Step that should be skipped
         id: custom-id
+        if: always()
         run: |
           if [ ! -f results.md ]; then
             echo 'No results' > results.md
