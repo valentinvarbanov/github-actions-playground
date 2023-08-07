@@ -39,6 +39,6 @@ jobs:
           token: ${{ github.token }}
           name: results-check
           conclusion: ${{ steps.custom-id.conclusion }}
-          output_text_description_file: results.md
+          output_text_description_file: *.md
           output: |
             {"summary":"Results"}
