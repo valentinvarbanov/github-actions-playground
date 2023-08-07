@@ -29,7 +29,7 @@ jobs:
      
      
       # Step that will be skipped
-      - name: Step that should be skipped
+      - name: Prepare results.md file
         if: failure()
         run: |
           echo "Code coverage skipped" > results.md
@@ -46,6 +46,6 @@ jobs:
           token: ${{ github.token }}
           name: results-check
           conclusion: ${{ steps.custom-id.conclusion }}
-          output_text_description_file: ''
+          output_text_description_file: results.md
           output: |
             {"summary":"Results"}
