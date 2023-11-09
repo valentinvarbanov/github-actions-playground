@@ -56,7 +56,7 @@ jobs:
           environment-url: http://my-app-url.com
           environment: ${{ steps.prepare-environment.outputs.name }}
           # transient-environment: false
-          production_environment: true
+          production-environment: true
 
       - name: Deploy my app
         run: |
