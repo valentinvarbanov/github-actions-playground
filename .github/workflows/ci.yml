@@ -40,13 +40,23 @@ jobs:
     permissions:
       deployments: write
     steps:
+
+      - id: prepare-environment
+        run: |
+          if [[ ${{ github.event_name }} == "pull_request" ]]; then
+            echo 'name=dev' >> $GITHUB_OUTPUT
+          else
+            echo 'name=production' >> $GITHUB_OUTPUT
+          fi
       - uses: chrnorm/deployment-action@v2
         name: Create GitHub deployment
         id: deployment
         with:
           token: '${{ github.token }}'
           environment-url: http://my-app-url.com
-          environment: demo
+          environment: ${{ steps.prepare-environment.outputs.name }}
+          # transient-environment: false
+          production_environment: true
 
       - name: Deploy my app
         run: |
