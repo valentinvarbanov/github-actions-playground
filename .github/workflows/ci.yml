@@ -46,7 +46,7 @@ jobs:
         with:
           token: '${{ github.token }}'
           environment-url: http://my-app-url.com
-          environment: production
+          environment: demo
 
       - name: Deploy my app
         run: |
