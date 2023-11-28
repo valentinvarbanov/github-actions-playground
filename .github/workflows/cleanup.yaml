@@ -19,4 +19,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: dev-${{ steps.branch-name.outputs.current_branch }}
-          onlyDeactivateDeployments: true
+          ref: ${{ steps.branch-name.outputs.current_branch }}
+          # onlyDeactivateDeployments: true
