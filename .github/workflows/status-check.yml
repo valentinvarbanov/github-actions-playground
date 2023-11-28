@@ -25,7 +25,7 @@ jobs:
       # Step that fails
       - name: Run a test script 
         run: |
-          false
+          true
           
       # Step that will be skipped
       - name: Step that should be skipped
