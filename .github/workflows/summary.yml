@@ -19,6 +19,7 @@ jobs:
         with:
           token: ${{ github.token }}
           name: check
+          conclusion: success
           output_text_description_file: summary.md
           output: |
             { "summary" : "### Hello world! 🚀" }
