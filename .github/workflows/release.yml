@@ -1,0 +1,110 @@
+
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bug-fixes:
+        description: 'Does the release have bug fixes?'
+        required: true
+        type: boolean
+        default: true
+      new-features:
+        description: 'Does the release include any new features?'
+        required: true
+        type: boolean
+      compatible:
+        description: 'Is the release backwards compatible?'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/github-script@v6
+        id: calculate-next
+        with:
+          result-encoding: string
+          script: |
+
+            const allTags = [];
+
+            // only match full tags (vx.y.z or x.y.z)
+            const tagRegex = /v?([0-9]+)[.]([0-9]+)[.]([0-9]+)/;
+
+            const tagsPerPage = 50;
+            const page = 1;
+            var hasMoreTags = true;
+
+            while (hasMoreTags) {
+              const tags = await github.rest.repos.listTags({
+                owner: "${{ github.repository_owner }}",
+                repo: "${{ github.event.repository.name }}",
+                per_page: tagsPerPage,
+                page: page,
+              });
+
+              if (tags.data.length !== tagsPerPage) {
+                hasMoreTags = false;
+              }
+
+              for (const tag of tags.data) {
+                allTags.push(tag.name);
+              }
+            }
+
+            const latest = allTags
+              .filter((tag) => tag.match(tagRegex))
+              .map((tag) => tag.replace('v', '')) // remove v prefix
+              .reduce((a, b) => {
+                return (0 < a.localeCompare(b, 'en', { numeric: true, sensitivity: 'base' }) ? a : b);
+              }, 'v1.0.0'); // v1.0.0 is fallback
+
+            const match = latest.match(tagRegex);
+            var latestMajor = parseInt(match[1]);
+            var latestMinor = parseInt(match[2]);
+            var latestPatch = parseInt(match[3]);
+
+            if (!core.getBooleanInput('compatible', { required: true })) {
+              latestMajor += 1;
+              latestMinor = 0;
+              latestPatch = 0;
+            } else if (core.getBooleanInput('new-features', { required: true })) {
+              latestMinor += 1;
+              latestPatch = 0;
+            } else if (core.getBooleanInput('bug-fixes', { required: true })) {
+              latestPatch += 1;
+            } else {
+              core.setFailed(`No new features are bug fixes, no new version will be released.`);
+            }
+
+            core.setOutput('tag-major', `v${latestMajor}`);
+            core.setOutput('tag-minor', `v${latestMajor}.${latestMinor}`);
+            core.setOutput('tag-patch', `v${latestMajor}.${latestMinor}.${latestPatch}`);
+            core.setOutput('release', `${latestMajor}.${latestMinor}.${latestPatch}`);
+
+      - uses: actions/checkout@v4
+
+      - run: |
+          git config --local user.name 'github-actions[bot]'
+          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+
+          git tag ${{ steps.calculate-next.outputs.tag-major }} --force
+          git tag ${{ steps.calculate-next.outputs.tag-minor }} --force
+          git tag ${{ steps.calculate-next.outputs.tag-patch }} 
+
+          git push --tags --force
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.calculate-next.outputs.release }}
+          tag_name: ${{ steps.calculate-next.outputs.tag-patch }}
+      
+      
+            
+
