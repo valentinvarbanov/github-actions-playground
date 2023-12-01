@@ -76,7 +76,7 @@ jobs:
             } else if (${{ inputs.new-features }}) {
               latestMinor += 1;
               latestPatch = 0;
-            } else if (${{ inputs.bug-fixes }})) {
+            } else if (${{ inputs.bug-fixes }}) {
               latestPatch += 1;
             } else {
               core.setFailed(`No new features are bug fixes, no new version will be released.`);
