@@ -57,12 +57,16 @@ jobs:
               }
             }
 
+            console.log(allTags);
+
             const latest = allTags
               .filter((tag) => tag.match(tagRegex))
               .map((tag) => tag.replace('v', '')) // remove v prefix
               .reduce((a, b) => {
                 return (0 < a.localeCompare(b, 'en', { numeric: true, sensitivity: 'base' }) ? a : b);
               }, 'v1.0.0'); // v1.0.0 is fallback
+
+            console.log(latest);
 
             const match = latest.match(tagRegex);
             var latestMajor = parseInt(match[1]);
