@@ -57,8 +57,10 @@ jobs:
               }
             }
 
-            # console.log(allTags);
-
+            if (core.isDebug()) {
+              console.log(allTags);
+            }
+            
             const latest = allTags
               .filter((tag) => tag.match(tagRegex))
               .map((tag) => tag.replace('v', '')) // remove v prefix
@@ -66,7 +68,9 @@ jobs:
                 return (0 < a.localeCompare(b, 'en', { numeric: true, sensitivity: 'base' }) ? a : b);
               }, '1.0.0'); // 1.0.0 is fallback
 
-            # console.log(latest);
+            if (core.isDebug()) {
+              console.log(latest);
+            }
 
             const match = latest.match(tagRegex);
             var latestMajor = parseInt(match[1]);
