@@ -5,19 +5,19 @@ on:
   workflow_dispatch:
     inputs:
       bug-fixes:
-        description: 'Does the release have bug fixes?'
+        description: 'Includes bug fixes'
         required: true
         type: boolean
         default: true
       new-features:
-        description: 'Does the release include any new features?'
+        description: 'Includes new features'
         required: true
         type: boolean
-      compatible:
-        description: 'Is the release backwards compatible?'
+      break-compatibility:
+        description: 'Breaks compatibility'
         required: true
         type: boolean
-        default: true
+        default: false
 
 jobs:
   release:
@@ -69,14 +69,14 @@ jobs:
             var latestMinor = parseInt(match[2]);
             var latestPatch = parseInt(match[3]);
 
-            if (!core.getBooleanInput('compatible', { required: true })) {
+            if (${{ inputs.break-compatibility }}) {
               latestMajor += 1;
               latestMinor = 0;
               latestPatch = 0;
-            } else if (core.getBooleanInput('new-features', { required: true })) {
+            } else if (${{ inputs.new-features }}) {
               latestMinor += 1;
               latestPatch = 0;
-            } else if (core.getBooleanInput('bug-fixes', { required: true })) {
+            } else if (${{ inputs.bug-fixes }})) {
               latestPatch += 1;
             } else {
               core.setFailed(`No new features are bug fixes, no new version will be released.`);
