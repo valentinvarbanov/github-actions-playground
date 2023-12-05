@@ -6,9 +6,16 @@ name: Status Check
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: 
+      - main
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
+      - opened
+      - synchronize
+      - reopened
+    branches: 
+      - main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,7 +32,10 @@ jobs:
       # Step that fails
       - name: Run a test script 
         run: |
-          true
+          echo "event_name='${{ github.event_name }}'"
+          echo "ref='${{ github.ref }}'"
+          echo "head_ref='${{ github.head_ref }}'"
+          echo "concurrency='ci-${{ github.head_ref || github.ref }}'"
           
       # Step that will be skipped
       - name: Step that should be skipped
