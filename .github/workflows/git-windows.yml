@@ -14,8 +14,9 @@ jobs:
         run: |
           echo "Listing home directory..."
           ls -la ~
-          echo "Showing global git config..."
-          git config --global --list
+          # no global config
+          # echo "Showing global git config..."
+          # git config --global --list
           
       - uses: actions/checkout@v4
       
@@ -24,7 +25,7 @@ jobs:
         run: |
           echo "Listing home directory..."
           ls -la ~
-          echo "Showing global git config..."
-          git config --global --list
           echo "Showing git config..."
           git config --list
+          echo "Showing global git config..."
+          git config --global --list
