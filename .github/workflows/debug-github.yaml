@@ -1,0 +1,13 @@
+name: ci
+on:
+  workflow_dispatch:
+
+jobs:
+  check-event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - run: |
+          echo 'github.ref: ${{ github.ref }}'
