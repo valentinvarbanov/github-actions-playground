@@ -5,8 +5,9 @@ on:
   pull_request:
     types:
       - closed
-      - open
-      - created
+      - opened
+      - synchronize
+      - reopened
     branches:
       - 'main'
 
