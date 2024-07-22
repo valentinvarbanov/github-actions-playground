@@ -1,0 +1,21 @@
+
+name: Test refs!
+
+on:
+  pull_request:
+    types:
+      - closed
+      - open
+    branches:
+      - 'main'
+
+jobs:
+  run_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: show the refs
+        shell: bash
+        run: |
+          echo github.head_ref ${{ github.head_ref }}
+          echo github.ref ${{ github.ref }}
+          echo github.ref_name ${{ github.ref_name }} 
